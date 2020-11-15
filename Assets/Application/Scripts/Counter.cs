@@ -27,20 +27,19 @@ public class Counter : MonoBehaviour
     {
         Observable.Interval(TimeSpan.FromSeconds(1.0f)).Take(4).Subscribe(x =>
         {
-            Debug.Log(3-x);
             switch (3 - x)
             {
                 case 3:
                     audio.Play();
-                    SetNumber(three);
+                    current = GetNumber(three);
                     MoveNumber(current);
                     break;
                 case 2:
-                    SetNumber(two);
+                    current = GetNumber(two);
                     MoveNumber(current);
                     break;
                 case 1:
-                    SetNumber(one);
+                    current = GetNumber(one);
                     MoveNumber(current);
                     break;
                 case 0:
@@ -51,13 +50,13 @@ public class Counter : MonoBehaviour
         });
     }
 
-    private void SetNumber(GameObject num)
+    private GameObject GetNumber(GameObject num)
     {
         if (current != null)
         {
             Destroy(current);
         }
-        current = Instantiate(num, countPos, Quaternion.identity, transform);
+        return Instantiate(num, countPos, Quaternion.identity, transform);
     }
 
     private void MoveNumber(GameObject num)
