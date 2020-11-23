@@ -31,15 +31,15 @@ public class Counter : MonoBehaviour
             {
                 case 3:
                     audio.Play();
-                    current = GetNumber(three);
+                    SwitchNumber(three);
                     MoveNumber(current);
                     break;
                 case 2:
-                    current = GetNumber(two);
+                    SwitchNumber(two);
                     MoveNumber(current);
                     break;
                 case 1:
-                    current = GetNumber(one);
+                    SwitchNumber(one);
                     MoveNumber(current);
                     break;
                 case 0:
@@ -50,13 +50,13 @@ public class Counter : MonoBehaviour
         });
     }
 
-    private GameObject GetNumber(GameObject num)
+    private void SwitchNumber(GameObject num)
     {
         if (current != null)
         {
             Destroy(current);
         }
-        return Instantiate(num, countPos, Quaternion.identity, transform);
+        current = Instantiate(num, countPos, Quaternion.identity, transform);
     }
 
     private void MoveNumber(GameObject num)
