@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8456a3173e911af43ba0a55973ce8140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  status: {fileID: 0}
   audio: {fileID: 6338298482462908200}
-  three: {fileID: 1814162065546898, guid: aa962c1cf7749bd4d9f5c7bac5be7f6d, type: 3}
-  two: {fileID: 1660145623224202, guid: 865a62eafdecee64ab9e947e326488d8, type: 3}
-  one: {fileID: 1426070542440800, guid: c3f6e7fc6c3e6a84b9e112980d679be3, type: 3}
+  three: {fileID: 3820229214687196009, guid: 8981e0ffc620a5c4885a9e705bc86359, type: 3}
+  two: {fileID: 2027075638668998209, guid: 55935eafde67aae48982d97666bd9bdd, type: 3}
+  one: {fileID: 4825308144106355908, guid: a7cda8a8402171d4cbf02d4f92c61eef, type: 3}
   zero: {fileID: 3525578856935987946}
 --- !u!82 &6338298482462908200
 AudioSource:
