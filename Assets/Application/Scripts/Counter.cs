@@ -7,6 +7,8 @@ using UniRx;
 
 public class Counter : MonoBehaviour
 {
+    [SerializeField] private GameStatusManager status;
+    
     [SerializeField] private AudioSource audio;
 
     [SerializeField] private GameObject three;
@@ -20,7 +22,22 @@ public class Counter : MonoBehaviour
     void Start()
     {
         countPos = transform.position;
-        CountDown();
+
+        status.CurrentStatus.DistinctUntilChanged().Subscribe(s =>
+        {
+            switch (s)
+            {
+                case GameStatusManager.Status.CountDown:
+                    CountDown();
+                    break;
+                case GameStatusManager.Status.Ready:
+                case GameStatusManager.Status.Playing:
+                case GameStatusManager.Status.GaveOver:
+                default:
+                    break;
+            }
+
+        }).AddTo(this);
     }
 
     private void CountDown()
