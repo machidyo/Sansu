@@ -7,13 +7,20 @@ using UniRx;
 
 public class PlayerPlane : MonoBehaviour
 {
-    [SerializeField] private GameObject porp;
+    private const int MAX_ROTATE_SPEED = 5;
+    
+    [SerializeField] private GameObject propeller;
     
     void Start()
     {
-        Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe(x =>
+        Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(x =>
         {
-            porp.transform.DORotate(new Vector3(0, 0, x * 360), 1f, RotateMode.FastBeyond360);
+            var speed = Mathf.Min(MAX_ROTATE_SPEED, x);
+            var rotationSpeed = speed * 360;
+            propeller
+                .transform
+                .DORotate(new Vector3(0, 0, rotationSpeed), 1f, RotateMode.FastBeyond360)
+                .SetEase(Ease.Linear);
         });
     }
 
