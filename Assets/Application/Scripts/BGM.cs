@@ -24,15 +24,15 @@ public class BGM : MonoBehaviour
             switch (s)
             {
                 case GameStatusManager.Status.Ready:
-                    audio.volume = 0.75f;
+                    audio.volume = 0.5f;
                     Play(ready);
                     break;
                 case GameStatusManager.Status.CountDown:
-                    audio.Stop();
+                    audio.volume = 0.1f;
+                    Play(playing);
                     break;
                 case GameStatusManager.Status.Playing:
                     audio.volume = 0.5f;
-                    Play(playing);
                     break;
                 case GameStatusManager.Status.GaveOver:
                     // todo: 結果次第で gameover へ
