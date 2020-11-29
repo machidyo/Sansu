@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
@@ -26,18 +24,6 @@ public class Ring : MonoBehaviour
                 MoveRing((int) x);
                 MoveNumber();
             }).AddTo(this);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            OnCorrect();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnWrong();
-        }
     }
 
     private void MoveRing(int num)
