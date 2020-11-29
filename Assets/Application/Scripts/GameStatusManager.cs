@@ -30,6 +30,7 @@ public class GameStatusManager : MonoBehaviour
                 case Status.Playing:
                     break;
                 case Status.GaveOver:
+                    Observable.Timer(TimeSpan.FromSeconds(15)).Subscribe(_ => CurrentStatus.Value = Status.Ready);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, null);
@@ -39,7 +40,7 @@ public class GameStatusManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             CurrentStatus.Value += 1;
         }
