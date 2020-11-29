@@ -59,5 +59,6 @@ public class Ring : MonoBehaviour
     {
         audio.clip = wrong;
         audio.Play();
+        Destroy(gameObject, 1);
     }
 }
