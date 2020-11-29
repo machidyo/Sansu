@@ -50,6 +50,7 @@ MonoBehaviour:
   ring: {fileID: 6652058654031626903}
   number: {fileID: 6651282257514238862}
   sparkle: {fileID: 1653748497285802597}
+  fireTrail: {fileID: 7412745386810186973, guid: 78cc88743f877a74cb0a1dfd65d4dab9, type: 3}
   audio: {fileID: 6655902041353725009}
   correct: {fileID: 8300000, guid: effe2ee4b797f6642aa4dc8d8f44c5dd, type: 3}
   wrong: {fileID: 8300000, guid: 11ee1280db2ca4641a11b8deed9a4c11, type: 3}

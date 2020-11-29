@@ -11,6 +11,7 @@ public class Ring : MonoBehaviour
     [SerializeField] private Transform number;
     
     [SerializeField] private ParticleSystem sparkle;
+    [SerializeField] private GameObject fireTrail;
 
     [SerializeField] private AudioSource audio;
     [SerializeField] private AudioClip correct;
@@ -24,7 +25,7 @@ public class Ring : MonoBehaviour
             {
                 MoveRing((int) x);
                 MoveNumber();
-            });
+            }).AddTo(this);
     }
 
     void Update()
@@ -64,6 +65,8 @@ public class Ring : MonoBehaviour
     {
         audio.clip = correct;
         audio.Play();
+        var temp = Instantiate(fireTrail, transform);
+        Destroy(gameObject, 1);
     }
 
     private void OnWrong()
