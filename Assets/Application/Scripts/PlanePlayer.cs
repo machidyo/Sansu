@@ -5,7 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using UniRx;
 
-public class PlayerPlane : MonoBehaviour
+public class PlanePlayer : MonoBehaviour
 {
     private const int MAX_ROTATE_SPEED = 5;
 

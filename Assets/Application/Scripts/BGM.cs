@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BGM : MonoBehaviour
 {
-    [SerializeField] private GameStatusManager status;
+    [SerializeField] private GameStatusController status;
     
     [SerializeField] private AudioClip ready;
     [SerializeField] private AudioClip playing;
@@ -23,18 +23,18 @@ public class BGM : MonoBehaviour
         {
             switch (s)
             {
-                case GameStatusManager.Status.Ready:
+                case GameStatusController.Status.Ready:
                     audio.volume = 0.5f;
                     Play(ready);
                     break;
-                case GameStatusManager.Status.CountDown:
+                case GameStatusController.Status.CountDown:
                     audio.volume = 0.1f;
                     Play(playing);
                     break;
-                case GameStatusManager.Status.Playing:
+                case GameStatusController.Status.Playing:
                     audio.volume = 0.5f;
                     break;
-                case GameStatusManager.Status.GaveOver:
+                case GameStatusController.Status.GaveOver:
                     // todo: 結果次第で gameover へ
                     Play(winner);
                     break;

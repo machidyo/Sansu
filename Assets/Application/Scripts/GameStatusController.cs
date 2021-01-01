@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class GameStatusManager : MonoBehaviour
+public class GameStatusController : MonoBehaviour
 {
     public enum Status
     {

@@ -5,9 +5,9 @@ using UnityEngine;
 using DG.Tweening;
 using UniRx;
 
-public class Counter : MonoBehaviour
+public class CountDown : MonoBehaviour
 {
-    [SerializeField] private GameStatusManager status;
+    [SerializeField] private GameStatusController status;
     
     [SerializeField] private AudioSource audio;
 
@@ -27,12 +27,12 @@ public class Counter : MonoBehaviour
         {
             switch (s)
             {
-                case GameStatusManager.Status.CountDown:
-                    CountDown();
+                case GameStatusController.Status.CountDown:
+                    StartCountDown();
                     break;
-                case GameStatusManager.Status.Ready:
-                case GameStatusManager.Status.Playing:
-                case GameStatusManager.Status.GaveOver:
+                case GameStatusController.Status.Ready:
+                case GameStatusController.Status.Playing:
+                case GameStatusController.Status.GaveOver:
                 default:
                     break;
             }
@@ -40,7 +40,7 @@ public class Counter : MonoBehaviour
         }).AddTo(this);
     }
 
-    private void CountDown()
+    private void StartCountDown()
     {
         Observable.Interval(TimeSpan.FromSeconds(1.0f)).Take(4).Subscribe(x =>
         {

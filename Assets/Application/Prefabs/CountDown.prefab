@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6338298482462908201}
-  - component: {fileID: 6338298482462908198}
   - component: {fileID: 6338298482462908200}
+  - component: {fileID: 1002363551171112363}
   m_Layer: 0
   m_Name: CountDown
   m_TagString: Untagged
@@ -33,24 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6338298482462908198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6338298482462908199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8456a3173e911af43ba0a55973ce8140, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  status: {fileID: 0}
-  audio: {fileID: 6338298482462908200}
-  three: {fileID: 3820229214687196009, guid: 8981e0ffc620a5c4885a9e705bc86359, type: 3}
-  two: {fileID: 2027075638668998209, guid: 55935eafde67aae48982d97666bd9bdd, type: 3}
-  one: {fileID: 4825308144106355908, guid: a7cda8a8402171d4cbf02d4f92c61eef, type: 3}
-  zero: {fileID: 3525578856935987946}
 --- !u!82 &6338298482462908200
 AudioSource:
   m_ObjectHideFlags: 0
@@ -147,6 +129,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1002363551171112363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6338298482462908199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d1f2e8b4195674ba390f9191578b32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status: {fileID: 0}
+  audio: {fileID: 6338298482462908200}
+  three: {fileID: 3820229214687196009, guid: 8981e0ffc620a5c4885a9e705bc86359, type: 3}
+  two: {fileID: 2027075638668998209, guid: 55935eafde67aae48982d97666bd9bdd, type: 3}
+  one: {fileID: 4825308144106355908, guid: a7cda8a8402171d4cbf02d4f92c61eef, type: 3}
+  zero: {fileID: 7429663580387244270, guid: d6a64501d1232034fb0b67b093f19c82, type: 3}
 --- !u!1001 &6338298481243808260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,10 +211,5 @@ PrefabInstance:
 --- !u!4 &3620520356980791520 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7334258185756637924, guid: d6a64501d1232034fb0b67b093f19c82, type: 3}
-  m_PrefabInstance: {fileID: 6338298481243808260}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &3525578856935987946 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7429663580387244270, guid: d6a64501d1232034fb0b67b093f19c82, type: 3}
   m_PrefabInstance: {fileID: 6338298481243808260}
   m_PrefabAsset: {fileID: 0}
