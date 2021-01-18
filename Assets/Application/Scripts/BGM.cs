@@ -6,47 +6,32 @@ using UnityEngine;
 
 public class BGM : MonoBehaviour
 {
-    [SerializeField] private GameStatusController status;
+    public enum Bgm
+    {
+        Ready,
+        Play,
+        GameOver,
+        GameClear
+    }
     
-    [SerializeField] private AudioClip ready;
-    [SerializeField] private AudioClip playing;
-    [SerializeField] private AudioClip gameOver;
-    [SerializeField] private AudioClip winner;
+    [SerializeField] private List<AudioClip> audios;
 
     private AudioSource audio;
 
     void Start()
     {
         audio = GetComponent<AudioSource>();
-        
-        status.CurrentStatus.DistinctUntilChanged().Subscribe(s =>
-        {
-            switch (s)
-            {
-                case GameStatusController.Status.Ready:
-                    audio.volume = 0.5f;
-                    Play(ready);
-                    break;
-                case GameStatusController.Status.CountDown:
-                    audio.volume = 0.1f;
-                    Play(playing);
-                    break;
-                case GameStatusController.Status.Playing:
-                    audio.volume = 0.5f;
-                    break;
-                case GameStatusController.Status.GaveOver:
-                    // todo: 結果次第で gameover へ
-                    Play(winner);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(s), s, null);
-            }
-        }).AddTo(this);
     }
 
-    private void Play(AudioClip clip)
+    public void Play(Bgm bgm, float volume = 0.5f)
     {
-        audio.clip = clip;
+        audio.clip = audios[(int)bgm];
+        audio.volume = volume;
         audio.Play();
+    }
+
+    public void SetVolume(float volume)
+    {
+        audio.volume = volume;
     }
 }

@@ -1,22 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 public class DeDebug : MonoBehaviour
 {
     public ReactiveProperty<bool> IsDebug = new ReactiveProperty<bool>();
     
-    [SerializeField] private GameStatusController status;
-    [SerializeField] private TextMeshProUGUI statusText;
+    [SerializeField] private GameObject statusText;
 
     void Start()
     {
-        IsDebug.DistinctUntilChanged().Subscribe(isDebug => statusText.gameObject.SetActive(isDebug));
-        status.CurrentStatus.DistinctUntilChanged().Subscribe(s => statusText.text = s.ToString());
+        IsDebug.DistinctUntilChanged().Subscribe(d =>
+        {
+            statusText.SetActive(d);
+        });
     }
-
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))

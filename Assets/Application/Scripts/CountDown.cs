@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using UniRx;
 
 public class CountDown : MonoBehaviour
 {
-    [SerializeField] private GameStatusController status;
-    
     [SerializeField] private AudioSource audio;
 
     [SerializeField] private GameObject three;
@@ -16,55 +15,26 @@ public class CountDown : MonoBehaviour
     [SerializeField] private GameObject one;
     [SerializeField] private ParticleSystem zero;
 
-    private Vector3 countPos;
     private GameObject current;
     
-    void Start()
+    public async void StartCountDown()
     {
-        countPos = transform.position;
+        audio.Play();
+        SwitchNumber(three);
+        MoveNumber(current);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
 
-        status.CurrentStatus.DistinctUntilChanged().Subscribe(s =>
-        {
-            switch (s)
-            {
-                case GameStatusController.Status.CountDown:
-                    StartCountDown();
-                    break;
-                case GameStatusController.Status.Ready:
-                case GameStatusController.Status.Playing:
-                case GameStatusController.Status.GaveOver:
-                default:
-                    break;
-            }
+        SwitchNumber(two);
+        MoveNumber(current);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
 
-        }).AddTo(this);
-    }
+        SwitchNumber(one);
+        MoveNumber(current);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
 
-    private void StartCountDown()
-    {
-        Observable.Interval(TimeSpan.FromSeconds(1.0f)).Take(4).Subscribe(x =>
-        {
-            switch (3 - x)
-            {
-                case 3:
-                    audio.Play();
-                    SwitchNumber(three);
-                    MoveNumber(current);
-                    break;
-                case 2:
-                    SwitchNumber(two);
-                    MoveNumber(current);
-                    break;
-                case 1:
-                    SwitchNumber(one);
-                    MoveNumber(current);
-                    break;
-                case 0:
-                    Destroy(current);
-                    zero.Play();
-                    break;
-            }
-        });
+        Destroy(current);
+        Instantiate(zero, transform).Play();
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
     }
 
     private void SwitchNumber(GameObject num)
@@ -73,7 +43,7 @@ public class CountDown : MonoBehaviour
         {
             Destroy(current);
         }
-        current = Instantiate(num, countPos, Quaternion.identity, transform);
+        current = Instantiate(num, transform);
     }
 
     private void MoveNumber(GameObject num)
