@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using UniRx;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlaneHandle : MonoBehaviour
 {
@@ -16,7 +11,7 @@ public class PlaneHandle : MonoBehaviour
     private bool isOn = false;
 
     private float updateInterval = 0.01f; // s
-    private float speed = 0.01f;
+    private float speed = 0.1f;
 
     void Start()
     {

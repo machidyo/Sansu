@@ -1,51 +1,54 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class QuestionViewer : MonoBehaviour
 {
     [SerializeField] private GameObject questionSet;
-    
+
     [SerializeField] private List<GameObject> numbers;
     [SerializeField] private List<GameObject> operators;
 
     private QuestionController questionController;
 
-    private void Awake()
-    {
-    }
+    private GameObject set;
 
     void Start()
     {
         questionController = FindObjectOfType<QuestionController>();
-        ViewQuestion();
+
+        questionController.HasQuestion
+            .DistinctUntilChanged()
+            .Where(has => has)
+            .Subscribe(_ =>
+            {
+                ViewQuestion();
+                SetColliderAction();
+            })
+            .AddTo(this);
     }
-    
-    public async void ViewQuestion()
+
+    private void ViewQuestion()
     {
-        await UniTask.WaitUntil(() => questionController.Answer > 0);
+        if (set != null) return;
         
         var pos = transform.position + Vector3.forward * 30;
-        var set = Instantiate(questionSet, pos, Quaternion.identity);
+        set = Instantiate(questionSet, pos, Quaternion.identity);
 
         var xTran = set.transform.FindChildRecursive("X");
         ShowNumber(questionController.X, xTran);
 
         var opeTran = set.transform.FindChildRecursive("Operation");
         ShowOperator(questionController.Operation, opeTran);
-        
+
         var yTran = set.transform.FindChildRecursive("Y");
         ShowNumber(questionController.Y, yTran);
 
-        // todo: 複数の間違いに対応する
         var leftAnswer = set.transform.FindChildRecursive("LeftAnswerNumber");
         var rightAnswer = set.transform.FindChildRecursive("RightAnswerNumber");
-        var isEven = Random.Range(0, 2) % 2 == 0;
-        if (isEven)
+        if (ConvertIndexToSide(questionController.CorrectIndex) == "Left")
         {
             ShowNumber(questionController.Answer, leftAnswer);
             ShowNumber(questionController.WrongAnswer, rightAnswer);
@@ -74,9 +77,9 @@ public class QuestionViewer : MonoBehaviour
         {
             var num = Instantiate(numbers[indexes[i]], parent);
             // 0.4f は画面上で見て良い値をマジックナンバーとして設定
-            var posX = indexes.Count % 2 == 0 
-                ? 0.4f * (center - i) - 0.2f  // 偶数個の場合センターが文字の区切りになるので -0.2f している
-                : 0.4f * (center - i);        // 奇数個の場合
+            var posX = indexes.Count % 2 == 0
+                ? 0.4f * (center - i) - 0.2f // 偶数個の場合センターが文字の区切りになるので -0.2f している
+                : 0.4f * (center - i); // 奇数個の場合
             num.transform.localPosition = new Vector3(posX, 0.0f, 0.0f);
             num.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
@@ -84,7 +87,7 @@ public class QuestionViewer : MonoBehaviour
 
     private void ShowOperator(QuestionController.OperatorKind kind, Transform parent)
     {
-        var ope = Instantiate(operators[(int)kind], parent);
+        var ope = Instantiate(operators[(int) kind], parent);
         switch (kind)
         {
             case QuestionController.OperatorKind.Plus:
@@ -99,5 +102,47 @@ public class QuestionViewer : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
         }
+    }
+
+    private void SetColliderAction()
+    {
+        SetOnTriggerEnterAction("Left");
+        SetOnTriggerEnterAction("Right");
+    }
+
+    private void SetOnTriggerEnterAction(string side)
+    {
+        var answer = set.transform.FindChildRecursive(side + "Answer");
+        var box = answer.GetComponent<BoxCollider>();
+        box.OnTriggerEnterAsObservable()
+            .Where(_ => _.gameObject.name == "Direction")
+            .Subscribe(_ =>
+            {
+                Debug.Log($"hit {side} answer by {_.gameObject.name}");
+                var isCorrect = questionController.CheckAnswer(ConvertSideToIndex(side));
+
+                if (isCorrect)
+                {
+                    // todo: 正解のエフェクト
+                    // todo: 正解のES
+                }
+                else
+                {
+                    // todo: 不正解のエフェクト
+                    // todo: 不正解のES
+                }
+                
+                Destroy(set);
+            });
+    }
+
+    private string ConvertIndexToSide(int index)
+    {
+        return index == 0 ? "Left" : "Right";
+    }
+
+    private int ConvertSideToIndex(string side)
+    {
+        return side == "Left" ? 0 : 1;
     }
 }

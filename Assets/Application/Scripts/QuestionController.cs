@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class QuestionController : MonoBehaviour
@@ -14,36 +12,46 @@ public class QuestionController : MonoBehaviour
         Multiply = 2,
         Divide = 3
     }
+    
+    public ReactiveProperty<bool> HasQuestion = new ReactiveProperty<bool>();
+    public Action OnCorrect;
 
     public int X { get; private set; } = -1;
     public int Y { get; private set; } = -1;
     public OperatorKind Operation { get; private set; }
     public int Answer { get; private set; } = -1;
-    // todo: 間違い二つ、三つと増やす
     public int WrongAnswer { get; private set; } = -1;
-
-    void Start()
+    public int CorrectIndex { get; private set; } = -1;
+    
+    public void StartQuestion()
     {
         SetQuestion();
     }
 
+    public void StopQuestion()
+    {
+        Reset();
+    }
+
     private void Reset()
     {
+        HasQuestion.Value = false;
         X = -1;
         Y = -1;
         Answer = -1;
         WrongAnswer = -1;
+        CorrectIndex = -1;
     }
     
-    public void SetQuestion()
+    private void SetQuestion()
     {
         Reset();
         
         // todo: 繰り上げ、繰り下げモードを追加する
         while (Answer < 0)
         {
-            X = Random.Range(0, 19);
-            Y = Random.Range(0, 19);
+            X = Random.Range(0, 20);
+            Y = Random.Range(0, 20);
             Operation = Random.Range(0, 2) % 2 == 0 ? OperatorKind.Plus : OperatorKind.Minus;
             Answer = Calculate();
 
@@ -54,9 +62,12 @@ public class QuestionController : MonoBehaviour
                     : Answer - Random.Range(1, 3);
             }
         }
+        CorrectIndex = Random.Range(0, 2);
+
+        HasQuestion.Value = true;
     }
 
-    public int Calculate()
+    private int Calculate()
     {
         switch (Operation)
         {
@@ -71,5 +82,17 @@ public class QuestionController : MonoBehaviour
             default:
                 return X + Y;
         }
+    }
+
+    public bool CheckAnswer(int index)
+    {
+        var isCorrect = CorrectIndex == index;
+        if (isCorrect)
+        {
+            OnCorrect?.Invoke();
+        }
+        SetQuestion();
+
+        return isCorrect;
     }
 }

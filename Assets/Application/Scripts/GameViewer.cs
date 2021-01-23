@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks.Triggers;
 using JetBrains.Annotations;
 using TMPro;

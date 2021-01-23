@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -17,31 +15,43 @@ public class GameController : MonoBehaviour
         Play = 2,
         Result = 3,
     }
+
+    [SerializeField] private QuestionController questionController;
+    [SerializeField] private PlanePlayer planePlayer;
     
     public ReactiveProperty<Status> CurrentStatus = new ReactiveProperty<Status>();
     public ReactiveProperty<int> Score = new ReactiveProperty<int>();
 
     public bool IsClear { get; private set; }
 
-    private bool canStart = false;
+    private bool canPlay = false;
     
     async void Start()
     {
         // ready to play
         Reset();
         CurrentStatus.Value = Status.Ready;
-        await UniTask.WaitUntil(() => canStart);
+        await UniTask.WaitUntil(() => canPlay);
         
         // count down
         CurrentStatus.Value = Status.CountDown;
+        planePlayer.RotatePropeller().Forget();
         await UniTask.Delay(TimeSpan.FromSeconds(4));
 
         // game start
         CurrentStatus.Value = Status.Play;
         Timer.Start(PLAY_TIME);
-
+        planePlayer.StartToFly().Forget();
+        questionController.OnCorrect = () => Score.Value++;
+        questionController.StartQuestion();
+        
         await WaitGameEnd();
 
+        // game stop
+        questionController.StopQuestion();
+        questionController.OnCorrect = null;
+        planePlayer.StopToFly().Forget();
+        
         // show result
         CurrentStatus.Value = Status.Result;
         await UniTask.Delay(TimeSpan.FromSeconds(3));
@@ -51,13 +61,13 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
-        canStart = true;
+        canPlay = true;
     }
 
     private void Reset()
     {
         IsClear = false;
-        canStart = false;
+        canPlay = false;
         Score.Value = 0;
         Timer.Reset();
     }
