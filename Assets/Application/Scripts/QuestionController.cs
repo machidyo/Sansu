@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -22,7 +23,12 @@ public class QuestionController : MonoBehaviour
     public int Answer { get; private set; } = -1;
     public int WrongAnswer { get; private set; } = -1;
     public int CorrectIndex { get; private set; } = -1;
-    
+
+    void Start()
+    {
+        Reset();
+    }
+
     public void StartQuestion()
     {
         SetQuestion();
@@ -42,11 +48,11 @@ public class QuestionController : MonoBehaviour
         WrongAnswer = -1;
         CorrectIndex = -1;
     }
-    
+
     private void SetQuestion()
     {
         Reset();
-        
+
         // todo: 繰り上げ、繰り下げモードを追加する
         while (Answer < 0)
         {
@@ -54,16 +60,16 @@ public class QuestionController : MonoBehaviour
             Y = Random.Range(0, 20);
             Operation = Random.Range(0, 2) % 2 == 0 ? OperatorKind.Plus : OperatorKind.Minus;
             Answer = Calculate();
-
-            while (WrongAnswer < 0 || WrongAnswer == Answer)
-            {
-                WrongAnswer = Random.Range(0, 2) % 2 == 0 
-                    ? Answer + Random.Range(1, 3) 
-                    : Answer - Random.Range(1, 3);
-            }
         }
-        CorrectIndex = Random.Range(0, 2);
 
+        while (WrongAnswer < 0 || WrongAnswer == Answer)
+        {
+            WrongAnswer = Random.Range(0, 2) % 2 == 0
+                ? Answer + Random.Range(1, 3)
+                : Answer - Random.Range(1, 3);
+        }
+
+        CorrectIndex = Random.Range(0, 2);
         HasQuestion.Value = true;
     }
 
@@ -91,7 +97,6 @@ public class QuestionController : MonoBehaviour
         {
             OnCorrect?.Invoke();
         }
-        SetQuestion();
 
         return isCorrect;
     }
