@@ -32,8 +32,6 @@ public class QuestionViewer : MonoBehaviour
 
     private void ViewQuestion()
     {
-        if (set != null) return;
-        
         var pos = transform.position + Vector3.forward * 30;
         set = Instantiate(questionSet, pos, Quaternion.identity);
 
@@ -118,7 +116,6 @@ public class QuestionViewer : MonoBehaviour
             .Where(_ => _.gameObject.name == "Direction")
             .Subscribe(_ =>
             {
-                Debug.Log($"hit {side} answer by {_.gameObject.name}");
                 var isCorrect = questionController.CheckAnswer(ConvertSideToIndex(side));
 
                 if (isCorrect)
@@ -131,8 +128,11 @@ public class QuestionViewer : MonoBehaviour
                     // todo: 不正解のエフェクト
                     // todo: 不正解のES
                 }
-                
-                Destroy(set);
+
+                // todo:
+                // ここで Destory したほうがいいが、CheckAnswer の後、非同期で問題生成、表示までやると、
+                // ここの Destory より早く ↑ の処理が終わってしまう問題があり、いったんステイした。
+                // Destroy(set);
             });
     }
 

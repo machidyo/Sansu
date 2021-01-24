@@ -24,24 +24,38 @@ public class QuestionController : MonoBehaviour
     public int WrongAnswer { get; private set; } = -1;
     public int CorrectIndex { get; private set; } = -1;
 
+    private bool canQuestion = false;
+
     void Start()
     {
-        Reset();
+        ResetQuestion();
+
+        HasQuestion
+            .DistinctUntilChanged()
+            .Where(_ => canQuestion)
+            .Where(has => !has)
+            .Subscribe(_ =>
+            {
+                Debug.Log("HasQuestion call SetQuestion");
+                SetQuestion();
+            })
+            .AddTo(this);
     }
 
     public void StartQuestion()
     {
+        canQuestion = true;
         SetQuestion();
     }
 
     public void StopQuestion()
     {
-        Reset();
+        ResetQuestion();
+        canQuestion = false;
     }
 
-    private void Reset()
+    private void ResetQuestion()
     {
-        HasQuestion.Value = false;
         X = -1;
         Y = -1;
         Answer = -1;
@@ -51,7 +65,7 @@ public class QuestionController : MonoBehaviour
 
     private void SetQuestion()
     {
-        Reset();
+        ResetQuestion();
 
         // todo: 繰り上げ、繰り下げモードを追加する
         while (Answer < 0)
@@ -98,6 +112,7 @@ public class QuestionController : MonoBehaviour
             OnCorrect?.Invoke();
         }
 
+        HasQuestion.Value = false;
         return isCorrect;
     }
 }
