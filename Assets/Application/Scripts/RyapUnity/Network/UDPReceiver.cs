@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using RyapUnity.Extention;
 using RyapUnity.Ryap;
 using UnityEngine;
@@ -19,22 +20,32 @@ namespace RyapUnity.Network
         public bool IsButtonAClicked = false;
 
         private UdpClient udp;
+        private CancellationTokenSource cancel = new CancellationTokenSource();
 
         void Start()
         {
             udp = new UdpClient(localPort) {Client = {ReceiveTimeout = 500}};
-            StartCoroutine(ThreadMethod());
+            ThreadMethod().Forget();
         }
 
-        private IEnumerator ThreadMethod()
+        void OnDestroy()
+        {
+            cancel.Cancel();
+        }
+
+        private async UniTask ThreadMethod()
         {
             IPEndPoint remoteEp = null;
             Header header = default;
             ImuData imu = default;
             ButtonData button = default;
+            var hasError = false;
+
+            await UniTask.SwitchToThreadPool();
             
-            while (true)
+            while (!cancel.IsCancellationRequested)
             {
+                hasError = false;
                 try
                 {
                     var data = udp.Receive(ref  remoteEp);
@@ -66,10 +77,17 @@ namespace RyapUnity.Network
                 catch (Exception e)
                 {
                     Debug.Log(e);
+                    hasError = true;
                 }
 
-                // 30ms is a little less waiting time than ryap(40ms)
-                yield return new WaitForSeconds(0.03f);
+                if (hasError)
+                {
+                    await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: cancel.Token);
+                }
+                else
+                {
+                    await UniTask.Delay(1, cancellationToken: cancel.Token);
+                }
             }
         }
 
