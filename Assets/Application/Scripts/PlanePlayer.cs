@@ -11,7 +11,7 @@ public class PlanePlayer : MonoBehaviour
     private const float FLY_MAX_SPEED = 1f;
     
     [SerializeField] private GameObject propeller;
-    [SerializeField] private Transform direction;
+    [SerializeField] private Transform m5StickC;
 
     private bool canFly = false;
     private float flySpeed = 0.1f;
@@ -76,9 +76,9 @@ public class PlanePlayer : MonoBehaviour
         await UniTask.WaitUntil(() => canFly);
         while (canFly)
         {
-            var forward = transform.rotation * new Vector3(0, 0, flySpeed);
+            var forward = m5StickC.forward * flySpeed;
             transform.DOMove(transform.position + forward, FLY_UPDATE_INTERVAL);
-            transform.DOLookAt(direction.position, FLY_UPDATE_INTERVAL);
+            transform.rotation = m5StickC.rotation;
 
             await UniTask.Delay(TimeSpan.FromSeconds(FLY_UPDATE_INTERVAL));
         }

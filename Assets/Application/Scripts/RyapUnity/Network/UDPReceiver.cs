@@ -86,7 +86,7 @@ namespace RyapUnity.Network
                 }
                 else
                 {
-                    await UniTask.Delay(1, cancellationToken: cancel.Token);
+                    await UniTask.Delay(20, cancellationToken: cancel.Token);
                 }
             }
         }
