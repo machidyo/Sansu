@@ -4,5 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Application/Scenes/Sansu.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 4dc8df49e4fbad645ac6e9d96840b31a, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a2f762924ff493741933b11584c32c09, type: 2}
