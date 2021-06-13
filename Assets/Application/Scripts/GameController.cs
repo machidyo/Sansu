@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private QuestionController questionController;
     [SerializeField] private PlanePlayer planePlayer;
+    [SerializeField] private Background background;
     
     public ReactiveProperty<Status> CurrentStatus = new ReactiveProperty<Status>();
     public ReactiveProperty<int> Score = new ReactiveProperty<int>();
@@ -42,6 +43,7 @@ public class GameController : MonoBehaviour
         CurrentStatus.Value = Status.Play;
         Timer.Start(PLAY_TIME);
         planePlayer.StartToFly().Forget();
+        background.StartToMove().Forget();
         questionController.OnCorrect = () => Score.Value++;
         questionController.StartQuestion();
         
@@ -51,6 +53,7 @@ public class GameController : MonoBehaviour
         questionController.StopQuestion();
         questionController.OnCorrect = null;
         planePlayer.StopToFly().Forget();
+        background.StopToMove().Forget();
         
         // show result
         CurrentStatus.Value = Status.Result;
