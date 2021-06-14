@@ -76,10 +76,7 @@ public class PlanePlayer : MonoBehaviour
         await UniTask.WaitUntil(() => canFly);
         while (canFly)
         {
-            var forward = m5StickC.forward * flySpeed;
-            transform.DOMove(transform.position + forward, FLY_UPDATE_INTERVAL);
             transform.rotation = m5StickC.rotation;
-
             await UniTask.Delay(TimeSpan.FromSeconds(FLY_UPDATE_INTERVAL));
         }
     }
