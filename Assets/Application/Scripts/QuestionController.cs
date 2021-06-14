@@ -67,7 +67,6 @@ public class QuestionController : MonoBehaviour
     {
         ResetQuestion();
 
-        // todo: 繰り上げ、繰り下げモードを追加する
         while (Answer < 0)
         {
             X = Random.Range(0, 20);
@@ -114,5 +113,11 @@ public class QuestionController : MonoBehaviour
 
         HasQuestion.Value = false;
         return isCorrect;
+    }
+
+    public void ThroughToAnswer()
+    {
+        HasQuestion.Value = false;
+        ResetQuestion();
     }
 }

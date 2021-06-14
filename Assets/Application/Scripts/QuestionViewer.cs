@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -14,6 +16,7 @@ public class QuestionViewer : MonoBehaviour
     private QuestionController questionController;
 
     private GameObject set;
+    private CancellationTokenSource throughCheckerCancellationTokenSource;
 
     void Start()
     {
@@ -32,8 +35,11 @@ public class QuestionViewer : MonoBehaviour
 
     private void ViewQuestion()
     {
-        var pos = transform.position + Vector3.forward * 30;
+        var pos = transform.position + Vector3.forward * 50;
         set = Instantiate(questionSet, pos, Quaternion.identity);
+        set.transform.parent = FindObjectOfType<Background>().NextStage.transform;
+        throughCheckerCancellationTokenSource = new CancellationTokenSource();
+        CheckThatPlayerThroughQuestion(throughCheckerCancellationTokenSource).Forget();
 
         var xTran = set.transform.FindChildRecursive("X");
         ShowNumber(questionController.X, xTran);
@@ -116,8 +122,9 @@ public class QuestionViewer : MonoBehaviour
             .Where(_ => _.gameObject.name == "Direction")
             .Subscribe(_ =>
             {
+                throughCheckerCancellationTokenSource.Cancel();
+                
                 var isCorrect = questionController.CheckAnswer(ConvertSideToIndex(side));
-
                 if (isCorrect)
                 {
                     // todo: 正解のエフェクト
@@ -129,11 +136,25 @@ public class QuestionViewer : MonoBehaviour
                     // todo: 不正解のES
                 }
 
-                // todo:
                 // ここで Destory したほうがいいが、CheckAnswer の後、非同期で問題生成、表示までやると、
                 // ここの Destory より早く ↑ の処理が終わってしまう問題があり、いったんステイした。
-                // Destroy(set);
+                // todo: Destroy(set);
             });
+    }
+
+    private async UniTask CheckThatPlayerThroughQuestion(CancellationTokenSource token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            await UniTask.Delay(1000, cancellationToken: token.Token);
+
+            if (set.transform.position.z < -13) // camera.pos.z = 10 + buffer -3
+            {
+                token.Cancel();
+                Destroy(set);
+                questionController.ThroughToAnswer();
+            }
+        }   
     }
 
     private string ConvertIndexToSide(int index)

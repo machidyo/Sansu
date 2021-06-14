@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -15,7 +14,8 @@ public class Background : MonoBehaviour
 
     [SerializeField] private Transform m5StickC;
 
-    
+    public GameObject NextStage => nextStage;
+
     private bool canMove = false;
     private float moveSpeed = 0.1f;
 
