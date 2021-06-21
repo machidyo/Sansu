@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks.Triggers;
 using JetBrains.Annotations;
+using MoreMountains.Feedbacks;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class GameViewer : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private MMFeedbacks timerFeedback;
     
     [Header("Debug")]
     [SerializeField] private TextMeshProUGUI statusText;
@@ -49,7 +51,11 @@ public class GameViewer : MonoBehaviour
                 case GameController.Status.Play:
                     bgm.SetVolume(0.5f);
                     scoreDisposable = gameController.Score.Subscribe(score => scoreText.text = $"{score}");
-                    timerDisposable = Timer.RemainingSecond.Subscribe(timer => timerText.text = $"{timer}");
+                    timerDisposable = Timer.RemainingSecond.Subscribe(timer =>
+                    {
+                        timerText.text = $"{timer}";
+                        timerFeedback.PlayFeedbacks();
+                    });
                     break;
                 case GameController.Status.Result:
                     if (gameController.IsClear)
