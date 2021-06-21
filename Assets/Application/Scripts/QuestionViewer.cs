@@ -119,7 +119,7 @@ public class QuestionViewer : MonoBehaviour
         var answer = set.transform.FindChildRecursive(side + "Answer");
         var box = answer.GetComponent<BoxCollider>();
         box.OnTriggerEnterAsObservable()
-            .Where(_ => _.gameObject.name == "Direction")
+            .Where(_ => _.gameObject.name == "Plane")
             .Subscribe(_ =>
             {
                 throughCheckerCancellationTokenSource.Cancel();
@@ -127,13 +127,11 @@ public class QuestionViewer : MonoBehaviour
                 var isCorrect = questionController.CheckAnswer(ConvertSideToIndex(side));
                 if (isCorrect)
                 {
-                    // todo: 正解のエフェクト
-                    // todo: 正解のES
+                    answer.FindChildRecursive("Ring").GetComponent<Ring>().OnCorrect();
                 }
                 else
                 {
-                    // todo: 不正解のエフェクト
-                    // todo: 不正解のES
+                    answer.FindChildRecursive("Ring").GetComponent<Ring>().OnWrong();
                 }
 
                 // ここで Destory したほうがいいが、CheckAnswer の後、非同期で問題生成、表示までやると、

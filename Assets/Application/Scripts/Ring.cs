@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using UniRx;
 using UnityEngine;
 
@@ -11,9 +12,8 @@ public class Ring : MonoBehaviour
     [SerializeField] private ParticleSystem sparkle;
     [SerializeField] private GameObject fireTrail;
 
-    [SerializeField] private AudioSource audio;
-    [SerializeField] private AudioClip correct;
-    [SerializeField] private AudioClip wrong;
+    [SerializeField] private MMFeedbacks correctFeedback;
+    [SerializeField] private MMFeedbacks wrongFeedback;
     
     void Start()
     {
@@ -47,18 +47,16 @@ public class Ring : MonoBehaviour
             .Play();
     }
 
-    private void OnCorrect()
+    public void OnCorrect()
     {
-        audio.clip = correct;
-        audio.Play();
+        correctFeedback.PlayFeedbacks();
         var temp = Instantiate(fireTrail, transform);
         Destroy(gameObject, 1);
     }
 
-    private void OnWrong()
+    public void OnWrong()
     {
-        audio.clip = wrong;
-        audio.Play();
+        wrongFeedback.PlayFeedbacks();
         Destroy(gameObject, 1);
     }
 }
