@@ -12,6 +12,7 @@ public class GameViewer : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private MMFeedbacks scoreFeedback;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private MMFeedbacks timerFeedback;
     
@@ -50,7 +51,11 @@ public class GameViewer : MonoBehaviour
                     break;
                 case GameController.Status.Play:
                     bgm.SetVolume(0.5f);
-                    scoreDisposable = gameController.Score.Subscribe(score => scoreText.text = $"{score}");
+                    scoreDisposable = gameController.Score.Subscribe(score =>
+                    {
+                        scoreText.text = $"{score}";
+                        scoreFeedback.PlayFeedbacks();
+                    });
                     timerDisposable = Timer.RemainingSecond.Subscribe(timer =>
                     {
                         timerText.text = $"{timer}";
