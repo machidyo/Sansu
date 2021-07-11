@@ -63,6 +63,9 @@ public class GameViewer : MonoBehaviour
                     });
                     break;
                 case GameController.Status.Result:
+                    timerText.text = "0";
+                    timerFeedback.PlayFeedbacks();
+                    
                     if (gameController.IsClear)
                     {
                         bgm.Play(BGM.Bgm.GameClear, 0.5f);
