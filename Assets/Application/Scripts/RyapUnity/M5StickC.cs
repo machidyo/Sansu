@@ -1,4 +1,5 @@
 ﻿using RyapUnity.Network;
+using UniRx;
 using UnityEngine;
 
 namespace RyapUnity
@@ -8,6 +9,8 @@ namespace RyapUnity
         private UDPReceiver receiver;
         private Quaternion baseQuaternion = Quaternion.identity;
 
+        public ReactiveProperty<bool> IsButtonAClicked = new ReactiveProperty<bool>();
+        
         void Start()
         {
             receiver = FindObjectOfType<UDPReceiver>();
@@ -19,7 +22,8 @@ namespace RyapUnity
             {
                 UpdateQuaternion(receiver.AhrsData);
             }
-
+            
+            IsButtonAClicked.Value = receiver.IsButtonAClicked;
             if (receiver.IsButtonAClicked)
             {
                 receiver.IsButtonAClicked = false;

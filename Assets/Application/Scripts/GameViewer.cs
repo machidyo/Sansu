@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks.Triggers;
 using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
+using RyapUnity;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class GameViewer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private MMFeedbacks timerFeedback;
     
+    [Header("UserInput")]
+    [SerializeField] private M5StickC m5StickC;
+
     [Header("Debug")]
     [SerializeField] private TextMeshProUGUI statusText;
     private DeDebug deDebug;
@@ -35,6 +39,13 @@ public class GameViewer : MonoBehaviour
         await gameController.StartAsync();
         await bgm.StartAsync();
         await deDebug.StartAsync();
+
+        m5StickC.IsButtonAClicked.DistinctUntilChanged()
+            .Where(isClicked => isClicked)
+            .Subscribe(isClicked =>
+            {
+                gameController.StartGame();
+            });
 
         gameController.CurrentStatus.Subscribe(status =>
         {
