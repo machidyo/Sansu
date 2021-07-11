@@ -146,11 +146,12 @@ public class QuestionViewer : MonoBehaviour
         {
             await UniTask.Delay(1000, cancellationToken: token.Token);
 
-            if (set.transform.position.z < -13) // camera.pos.z = 10 + buffer -3
+            if (set.transform.position.z < -33) // camera.pos.z = -30 + buffer -3
             {
                 token.Cancel();
                 Destroy(set);
                 questionController.ThroughToAnswer();
+                Debug.Log("プレイヤーが答えをスルーしてしまったので消去します。");
             }
         }   
     }
