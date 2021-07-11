@@ -22,8 +22,14 @@ namespace RyapUnity.Network
         private UdpClient udp;
         private CancellationTokenSource cancel = new CancellationTokenSource();
 
+        private static GameObject instance;
+
         void Start()
         {
+            if (instance != null) return;
+            instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+            
             udp = new UdpClient(localPort) {Client = {ReceiveTimeout = 500}};
             ThreadMethod().Forget();
         }
