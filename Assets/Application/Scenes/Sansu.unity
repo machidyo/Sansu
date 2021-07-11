@@ -532,6 +532,7 @@ MonoBehaviour:
   scoreFeedback: {fileID: 1282401950}
   timerText: {fileID: 4160162784644124594}
   timerFeedback: {fileID: 738209495}
+  m5StickC: {fileID: 515338963}
   statusText: {fileID: 4160162784348384335}
 --- !u!1 &407422301 stripped
 GameObject:
@@ -572,6 +573,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4174052520163144, guid: 280053154239720458c4b6093bfea66a, type: 3}
   m_PrefabInstance: {fileID: 553821451890777636}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &515338963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7280991398577648242, guid: 8ac94b0816a21c344a7f44f60e8a318a, type: 3}
+  m_PrefabInstance: {fileID: 7280991398030670656}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb832f2adbfe46b4382cb28ac79e298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &526887710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,7 +2630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3552095938496676439, guid: 9a642d1c80036494d8058352bc1f3b2d, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a642d1c80036494d8058352bc1f3b2d, type: 3}
@@ -3296,7 +3308,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2242236195913523579, guid: 8ac94b0816a21c344a7f44f60e8a318a, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7280991398577648237, guid: 8ac94b0816a21c344a7f44f60e8a318a, type: 3}
       propertyPath: m_Name
@@ -3348,7 +3360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7280991398577648242, guid: 8ac94b0816a21c344a7f44f60e8a318a, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ac94b0816a21c344a7f44f60e8a318a, type: 3}
