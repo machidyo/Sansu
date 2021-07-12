@@ -21,6 +21,11 @@ public class PlanePlayer : MonoBehaviour
         Reset();
         Fly().Forget();
     }
+
+    void OnDestroy()
+    {
+        Destroy(propeller);
+    }
     
     public async UniTask RotatePropeller()
     {

@@ -33,6 +33,11 @@ public class QuestionViewer : MonoBehaviour
             .AddTo(this);
     }
 
+    void OnDestroy()
+    {
+        Destroy(set);
+    }
+
     private void ViewQuestion()
     {
         var pos = transform.position + Vector3.forward * 50;
