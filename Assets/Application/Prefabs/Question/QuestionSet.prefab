@@ -405,7 +405,7 @@ MonoBehaviour:
   ring: {fileID: 406367000553118416}
   number: {fileID: 413611266469792713}
   sparkle: {fileID: 5692589268052537890}
-  fireTrail: {fileID: 7412745386810186973, guid: 78cc88743f877a74cb0a1dfd65d4dab9, type: 3}
+  fireTrail: {fileID: 7340187741244423250, guid: a23e3d2195d17474b83059316fe97120, type: 3}
   correctFeedback: {fileID: 4723103466707048341}
   wrongFeedback: {fileID: 6884564450285110120}
 --- !u!1 &409241648027521193
@@ -459,7 +459,7 @@ MonoBehaviour:
   ring: {fileID: 406367000240600674}
   number: {fileID: 413611265054271355}
   sparkle: {fileID: 5692589267203137168}
-  fireTrail: {fileID: 7412745386810186973, guid: 78cc88743f877a74cb0a1dfd65d4dab9, type: 3}
+  fireTrail: {fileID: 7340187741244423250, guid: a23e3d2195d17474b83059316fe97120, type: 3}
   correctFeedback: {fileID: 5912282808018176443}
   wrongFeedback: {fileID: 4409524145488634907}
 --- !u!1 &900088537703839551

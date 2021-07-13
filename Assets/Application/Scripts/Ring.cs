@@ -51,7 +51,8 @@ public class Ring : MonoBehaviour
     {
         correctFeedback.PlayFeedbacks();
         var temp = Instantiate(fireTrail, transform);
-        Destroy(gameObject, 1);
+        temp.GetComponent<ParticleSystem>().Play();
+        Destroy(gameObject, 2);
     }
 
     public void OnWrong()
