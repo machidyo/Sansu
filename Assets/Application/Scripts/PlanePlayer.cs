@@ -13,6 +13,8 @@ public class PlanePlayer : MonoBehaviour
     [SerializeField] private GameObject propeller;
     [SerializeField] private Transform m5StickC;
 
+    [SerializeField] private ParticleSystem wind;
+
     private bool canFly = false;
     private float flySpeed = 0.1f;
 
@@ -74,14 +76,21 @@ public class PlanePlayer : MonoBehaviour
     {
         canFly = false;
         flySpeed = 0.0f;
+        wind.Pause();
     }
     
     private async UniTask Fly()
     {
         await UniTask.WaitUntil(() => canFly);
+
+        wind.Play();
         while (canFly)
         {
             transform.rotation = m5StickC.rotation;
+            
+            var em = wind.emission;
+            em.rateOverTime = 100 * flySpeed / FLY_MAX_SPEED;
+
             await UniTask.Delay(TimeSpan.FromSeconds(FLY_UPDATE_INTERVAL));
         }
     }
