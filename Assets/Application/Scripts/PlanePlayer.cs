@@ -13,6 +13,7 @@ public class PlanePlayer : MonoBehaviour
     [SerializeField] private GameObject propeller;
     [SerializeField] private Transform m5StickC;
 
+    [SerializeField] private ParticleSystem broken;
     [SerializeField] private ParticleSystem wind;
 
     private bool canFly = false;
@@ -71,12 +72,18 @@ public class PlanePlayer : MonoBehaviour
         flySpeed = 0;
         canFly = false;
     }
+
+    public void ShowSmoke()
+    {
+        broken.Play();
+    }
     
     private void Reset()
     {
         canFly = false;
         flySpeed = 0.0f;
         wind.Pause();
+        broken.Pause();
     }
     
     private async UniTask Fly()

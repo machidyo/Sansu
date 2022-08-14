@@ -16,6 +16,7 @@ public class QuestionController : MonoBehaviour
     
     public ReactiveProperty<bool> HasQuestion = new ReactiveProperty<bool>();
     public Action OnCorrect;
+    public Action OnWrong;
 
     public int X { get; private set; } = -1;
     public int Y { get; private set; } = -1;
@@ -109,6 +110,10 @@ public class QuestionController : MonoBehaviour
         if (isCorrect)
         {
             OnCorrect?.Invoke();
+        }
+        else
+        {
+            OnWrong?.Invoke();
         }
 
         HasQuestion.Value = false;

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    private const int PLAY_TIME = 180;
+    private const int PLAY_TIME = 30;
     
     public enum Status
     {
@@ -24,8 +24,9 @@ public class GameController : MonoBehaviour
     public ReactiveProperty<int> Score = new ReactiveProperty<int>();
 
     public bool IsClear { get; private set; }
-
+    
     private bool canPlay = false;
+    private int life;
     
     async void Start()
     {
@@ -45,6 +46,11 @@ public class GameController : MonoBehaviour
         planePlayer.StartToFly().Forget();
         background.StartToMove().Forget();
         questionController.OnCorrect = () => Score.Value++;
+        questionController.OnWrong = () =>
+        {
+            life--;
+            planePlayer.ShowSmoke();
+        };
         questionController.StartQuestion();
         
         await WaitGameEnd();
@@ -52,12 +58,13 @@ public class GameController : MonoBehaviour
         // game stop
         questionController.StopQuestion();
         questionController.OnCorrect = null;
+        questionController.OnWrong = null;
         planePlayer.StopToFly().Forget();
         background.StopToMove().Forget();
         
         // show result
         CurrentStatus.Value = Status.Result;
-        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        await UniTask.Delay(TimeSpan.FromSeconds(5));
         
         SceneManager.LoadScene("Sansu");
     }
@@ -70,6 +77,7 @@ public class GameController : MonoBehaviour
     private void Reset()
     {
         IsClear = false;
+        life = 2;
         canPlay = false;
         Score.Value = 0;
         Timer.Reset();
@@ -79,7 +87,7 @@ public class GameController : MonoBehaviour
     {
         while (true)
         {
-            if (Timer.IsEnd())
+            if (Timer.IsEnd() || life == 0)
             {
                 IsClear = true;
                 break;
