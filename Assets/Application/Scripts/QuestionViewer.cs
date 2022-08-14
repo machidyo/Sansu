@@ -40,7 +40,7 @@ public class QuestionViewer : MonoBehaviour
 
     private void ViewQuestion()
     {
-        var pos = transform.position + Vector3.forward * 50;
+        var pos = transform.position + Vector3.forward * 150;
         set = Instantiate(questionSet, pos, Quaternion.identity);
         set.transform.parent = FindObjectOfType<Background>().NextStage.transform;
         throughCheckerCancellationTokenSource = new CancellationTokenSource();
@@ -151,7 +151,8 @@ public class QuestionViewer : MonoBehaviour
         {
             await UniTask.Delay(1000, cancellationToken: token.Token);
 
-            if (set.transform.position.z < -33) // camera.pos.z = -30 + buffer -3
+            Debug.Log(set.transform.position.z);
+            if (set.transform.position.z < -99) // camera.pos.z = -90 + buffer -9
             {
                 token.Cancel();
                 Destroy(set);

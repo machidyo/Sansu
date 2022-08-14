@@ -6,7 +6,7 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     private const float UPDATE_INTERVAL = 0.1f; // s
-    private const float MAX_SPEED_MOVEMENT = 1f;
+    private const float MAX_SPEED_MOVEMENT = 5f;
 
     [SerializeField] private GameObject stageGameObject;
     [SerializeField] private GameObject currentStage;
@@ -21,7 +21,7 @@ public class Background : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 5;
+        // Time.timeScale = 5;
         
         Reset();
         Move().Forget();
