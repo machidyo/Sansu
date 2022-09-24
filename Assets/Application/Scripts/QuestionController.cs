@@ -70,8 +70,8 @@ public class QuestionController : MonoBehaviour
 
         while (Answer < 0)
         {
-            X = Random.Range(0, 20);
-            Y = Random.Range(0, 20);
+            X = Random.Range(0, 10);
+            Y = Random.Range(0, 10);
             Operation = Random.Range(0, 2) % 2 == 0 ? OperatorKind.Plus : OperatorKind.Minus;
             Answer = Calculate();
         }
