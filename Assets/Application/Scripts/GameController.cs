@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    private const int PLAY_TIME = 30;
+    private const int PLAY_TIME = 120;
     
     public enum Status
     {
